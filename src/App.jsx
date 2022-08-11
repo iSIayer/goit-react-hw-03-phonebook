@@ -17,6 +17,18 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts)
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
   validateContact = data => {
     const normalizedValue = data.name.toLowerCase();
     const result = this.state.contacts.find(item =>
